@@ -2,6 +2,6 @@ import React from 'react'
 
 export const Lease = () => {
   return (
-    <div>Lease</div>
+    <div>PMS Lease</div>
   )
 }
