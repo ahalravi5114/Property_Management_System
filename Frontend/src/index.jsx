@@ -6,6 +6,8 @@ import Login from './Login'
 import { Tenant } from './Tenant/Tenant'
 import Lease from './Lease/Lease'
 import Property from './Property/Property'
+import TenantProfile from './Tenant/TenantProfile'
+import Homepage from './Homepage/Homepage'
 
 const App=()=>{
   return(
@@ -18,42 +20,35 @@ const App=()=>{
 
 const Router = createBrowserRouter([
   {
-      path: "/",
-      element: <Login />, 
+    path: "/",
+    element: <Login />, 
   },
   {
-      path: "/Lease",
-      element: <App />, 
-      children: [
-          {
-              path: "", 
-              element: <Lease />,
-          },
-        
-      ],
-  },{
-    path: "/Tenant",
-    element: <App />, 
+    path: "/user",
+    element: <App />,
     children: [
-        {
-            path: "", 
-            element: <Tenant />,
-        },
-      
+      {
+        index: true, 
+        element: <Homepage />, 
+      },
+      {
+        path: "lease",
+        element: <Lease />,
+      },
+      {
+        path: "tenant",
+        element: <Tenant />,
+      },{
+         path:"tenantProfile",
+         element:<TenantProfile/>
+      },
+      {
+        path: "property",
+        element: <Property />,
+      },
     ],
-  },{
-    path: "/Property",
-    element: <App />, 
-    children: [
-        {
-            path: "", 
-            element: <Property />,
-        },
-      
-    ],
-  }
+  },
 ]);
-
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(<RouterProvider router={Router} />);
