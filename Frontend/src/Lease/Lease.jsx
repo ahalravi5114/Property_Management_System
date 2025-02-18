@@ -1,7 +1,8 @@
 import React from 'react'
 
-export const Lease = () => {
+const Lease = () => {
   return (
     <div>PMS Lease</div>
   )
 }
+export default Lease

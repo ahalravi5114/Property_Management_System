@@ -1,7 +1,9 @@
 import React from 'react'
 
-export const Property = () => {
+const Property = () => {
   return (
     <div>Property</div>
   )
 }
+
+export default Property
