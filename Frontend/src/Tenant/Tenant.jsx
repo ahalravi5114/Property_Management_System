@@ -1,7 +1,11 @@
 import React from 'react'
+import { Outlet } from 'react-router-dom'
 
 export const Tenant = () => {
   return (
-    <div>Tenant</div>
+    <>
+        <div>Tenant</div>
+        <Outlet/>
+        </>
   )
 }
