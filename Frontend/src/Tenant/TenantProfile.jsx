@@ -1,71 +1,166 @@
-import { Avatar, Button, Card, CardContent, Tab, Tabs, Typography, Box } from "@mui/material";
-import { Phone as PhoneIcon, Email as EmailIcon, LocationOn as LocationIcon } from "@mui/icons-material";
-import { useState } from "react";
+import { Card, Avatar, Typography, Box, Divider, Button } from "@mui/material";
+import { Phone, Email, Cake, House, Payment, CalendarToday, Pets, Edit } from "@mui/icons-material";
 
 const TenantProfile = () => {
-  const [tabValue, setTabValue] = useState(0);
+  const tenantProfile = {
+    name: "Alice Doe",
+    avatarUrl: "https://ik.imagekit.io/varsh0506/Beauroi/profile_tenant.jpg?updatedAt=1739858483160",
+    nationality: "American",
+    dob: "01/01/1990",
+    phone: "(123) 456-7890",
+    email: "sampletenant@gmail.com",
+    address: "1234, Sample Street, Apartment 123",
+    unit_number: "123",
+    pet_policy: "Allowed",
+    tenant_duration: "12 months",
+    renewal: "1 month notice",
+    lease_status: "Active",
+    payment_preference: "Online",
+    monthly_rent: "$1000",
+    last_payment: "01/01/2022",
+    security_deposit: "Paid",
+  };
 
   return (
-    <Box sx={{ bgcolor: "#F5F5F5", minHeight: "100vh", p: 3, display: "flex", justifyContent: "center" }}>
-      <Card sx={{ width: "90%", maxWidth: 800, p: 3, boxShadow: 3 }}>
-        
-        <Box display="flex" alignItems="center" gap={2} mb={3}>
-          <Avatar src="https://via.placeholder.com/100" sx={{ width: 80, height: 80 }} />
-          <Box>
-            <Typography variant="h5" fontWeight="bold" color="#1C1C1C">John Doe</Typography>
-            <Typography variant="body2" color="#4A4A4A">Tenant</Typography>
+    <Box sx={{ minHeight: "100vh", display: "flex", p: 3, marginLeft: "300px", width: "70%", backgroundColor: "#f0f2f5" }}>
+      <Box sx={{ maxWidth: 1200, width: "100%", p: 3 }}>
+        <Box sx={{ display: "flex", alignItems: "center", mb: 4, justifyContent: "space-evenly", width: "100%" }}>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 4 }}>
+            <Avatar
+              alt="Tenant Profile"
+              src={tenantProfile.avatarUrl}
+              sx={{
+                width: 150,
+                height: 150,
+                border: "4px solid #1976d2",
+                boxShadow: 3,
+                transition: "all 0.3s ease",
+                "&:hover": {
+                  transform: "scale(1.05)",
+                },
+              }}
+            />
+            <Box>
+              <Typography variant="h4" fontWeight="bold" color="primary">
+                {tenantProfile.name}
+              </Typography>
+              <Typography variant="h6" color="text.secondary">
+                {tenantProfile.nationality}
+              </Typography>
+            </Box>
+          </Box>
+
+          <Box
+            sx={{
+              textAlign: "left",
+              p: 4,
+              boxShadow: 3,
+              borderRadius: "8px",
+              backgroundColor: "#ffffff",
+              display: "flex",
+              flexDirection: "column",
+              gap: 3,
+              width: "100%",
+              maxWidth: "500px",
+              mt: 2,
+            }}
+          >
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+              <Cake color="primary" />
+              <Typography variant="body1" color="text.primary">
+                Date of Birth: {tenantProfile.dob}
+              </Typography>
+            </Box>
+
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+              <Phone color="primary" />
+              <Typography variant="body1" color="text.primary">
+                Phone Number: {tenantProfile.phone}
+              </Typography>
+            </Box>
+
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+              <Email color="primary" />
+              <Typography variant="body1" color="text.primary">
+                Email: {tenantProfile.email}
+              </Typography>
+            </Box>
           </Box>
         </Box>
 
-        <Box display="flex" gap={2} alignItems="center">
-          <PhoneIcon color="primary" />
-          <Typography variant="body1" color="#4A4A4A">+123 456 7890</Typography>
-        </Box>
-        <Box display="flex" gap={2} alignItems="center" mt={1}>
-          <EmailIcon color="primary" />
-          <Typography variant="body1" color="#4A4A4A">johndoe@example.com</Typography>
-        </Box>
-        <Box display="flex" gap={2} alignItems="center" mt={1}>
-          <LocationIcon color="primary" />
-          <Typography variant="body1" color="#4A4A4A">123 Main St, City, Country</Typography>
-        </Box>
+        <Divider sx={{ my: 3 }} />
 
-        <Tabs value={tabValue} onChange={(e, newValue) => setTabValue(newValue)} sx={{ mt: 3 }}>
-          <Tab label="Personal" />
-          <Tab label="Lease" />
-          <Tab label="Payment" />
-        </Tabs>
+        <div className="flex flex-col gap-6">
+          <Card sx={{ p: 3, backgroundColor: "#ffffff", borderRadius: "12px", boxShadow: 3, transition: "all 0.3s ease", "&:hover": { boxShadow: 6 } }}>
+            <Typography variant="h6" color="primary" fontWeight="bold" sx={{ mb: 2 }}>
+              Lease Details
+            </Typography>
+            <div className="flex gap-5 justify-between">
+              <Box sx={{ flex: 1 }}>
+                <img src="https://ik.imagekit.io/varsh0506/Beauroi/property_beauroi.jpg?updatedAt=17398590165630" alt="Property" className="w-full h-52 object-cover rounded-lg" />
+              </Box>
+              <Box className="flex flex-col justify-center items-start gap-2 w-[50%]">
+                <Typography variant="body1" color="text.primary" sx={{ mb: 1 }}>
+                  <House sx={{ mr: 1, color: "#1976d2" }} />
+                  Address: {tenantProfile.address}
+                </Typography>
+                <Typography variant="body1" color="text.primary" sx={{ mb: 1 }}>
+                  <House sx={{ mr: 1, color: "#1976d2" }} />
+                  Unit Number: {tenantProfile.unit_number}
+                </Typography>
+                <Typography variant="body1" color="text.primary" sx={{ mb: 1 }}>
+                  <Pets sx={{ mr: 1, color: "#1976d2" }} />
+                  Pet Policy: {tenantProfile.pet_policy}
+                </Typography>
+                <Typography variant="body1" color="text.primary" sx={{ mb: 1 }}>
+                  <CalendarToday sx={{ mr: 1, color: "#1976d2" }} />
+                  Lease Duration: {tenantProfile.tenant_duration}
+                </Typography>
+                <Typography variant="body1" color="text.primary" sx={{ mb: 1 }}>
+                  <CalendarToday sx={{ mr: 1, color: "#1976d2" }} />
+                  Renewal Terms: {tenantProfile.renewal}
+                </Typography>
+                <Typography variant="body1" color="text.primary" sx={{ mb: 1 }}>
+                  <CalendarToday sx={{ mr: 1, color: "#1976d2" }} />
+                  Lease Status: {tenantProfile.lease_status}
+                </Typography>
+              </Box>
+            </div>
+          </Card>
 
-        <CardContent>
-          {tabValue === 0 && (
-            <Box>
-              <Typography variant="h6" color="#1C1C1C">Personal Details</Typography>
-              <Typography variant="body1" color="#4A4A4A">Date of Birth: Jan 1, 1990</Typography>
-              <Typography variant="body1" color="#4A4A4A">Nationality: American</Typography>
+          {/* Payment Details Card */}
+          <Card sx={{ p: 3, backgroundColor: "#ffffff", borderRadius: "12px", boxShadow: 3, transition: "all 0.3s ease", "&:hover": { boxShadow: 6 } }}>
+            <Typography variant="h6" color="primary" fontWeight="bold" sx={{ mb: 2 }}>
+              Payment Details
+            </Typography>
+            <Box sx={{ mt: 2 }}>
+              <Typography variant="body1" color="text.primary" sx={{ mb: 1 }}>
+                <Payment sx={{ mr: 1, color: "#1976d2" }} />
+                Payment Preference: {tenantProfile.payment_preference}
+              </Typography>
+              <Typography variant="body1" color="text.primary" sx={{ mb: 1 }}>
+                <Payment sx={{ mr: 1, color: "#1976d2" }} />
+                Monthly Rent: {tenantProfile.monthly_rent}
+              </Typography>
+              <Typography variant="body1" color="text.primary" sx={{ mb: 1 }}>
+                <Payment sx={{ mr: 1, color: "#1976d2" }} />
+                Last Payment: {tenantProfile.last_payment}
+              </Typography>
+              <Typography variant="body1" color="text.primary" sx={{ mb: 1 }}>
+                <Payment sx={{ mr: 1, color: "#1976d2" }} />
+                Security Deposit Status: {tenantProfile.security_deposit}
+              </Typography>
             </Box>
-          )}
-          {tabValue === 1 && (
-            <Box>
-              <Typography variant="h6" color="#1C1C1C">Lease Details</Typography>
-              <Typography variant="body1" color="#4A4A4A">Lease Start: Jan 1, 2024</Typography>
-              <Typography variant="body1" color="#4A4A4A">Rent Amount: $1200/month</Typography>
-            </Box>
-          )}
-          {tabValue === 2 && (
-            <Box>
-              <Typography variant="h6" color="#1C1C1C">Payment Details</Typography>
-              <Typography variant="body1" color="#4A4A4A">Last Payment: Feb 1, 2025</Typography>
-              <Typography variant="body1" color="#4A4A4A">Outstanding Balance: $0</Typography>
-            </Box>
-          )}
-        </CardContent>
+          </Card>
+        </div>
 
-        <Box display="flex" justifyContent="space-between" mt={3}>
-          <Button variant="contained" sx={{ bgcolor: "#2E8B57", color: "#FFF" }}>Edit Profile</Button>
-          <Button variant="contained" color="error">Logout</Button>
+        <Divider sx={{ my: 3 }} />
+        <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
+          <Button variant="contained" color="primary" sx={{ borderRadius: "8px", padding: "8px 24px" }} startIcon={<Edit />}>
+            Edit Profile
+          </Button>
         </Box>
-
-      </Card>
+      </Box>
     </Box>
   );
 };
