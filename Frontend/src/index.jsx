@@ -2,7 +2,7 @@ import ReactDOM from 'react-dom/client'
 import {createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom'
 import './index.css'
 import Sidemenu from './Sidemenu'
-import Login from './Login'
+import Signin from './Signin'
 import { Tenant } from './Tenant/Tenant'
 import Lease from './Lease/Lease'
 import Property from './Property/Property'
@@ -21,7 +21,7 @@ const App=()=>{
 const Router = createBrowserRouter([
   {
     path: "/",
-    element: <Login />, 
+    element: <Signin />, 
   },
   {
     path: "/user",
