@@ -16,7 +16,7 @@ const TenantProfile = () => {
     renewal: "1 month notice",
     lease_status: "Active",
     payment_preference: "Online",
-    monthly_rent: "$1000",
+    monthly_rent: "Rs 10,000",
     last_payment: "01/01/2022",
     security_deposit: "Paid",
   };
@@ -68,21 +68,21 @@ const TenantProfile = () => {
             <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
               <Cake color="primary" />
               <Typography variant="body1" color="text.primary">
-                Date of Birth: {tenantProfile.dob}
+                <span className="font-semibold">Date of Birth:</span> {tenantProfile.dob}
               </Typography>
             </Box>
 
             <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
               <Phone color="primary" />
               <Typography variant="body1" color="text.primary">
-                Phone Number: {tenantProfile.phone}
+              <span className="font-semibold">Phone Number:</span> {tenantProfile.phone}
               </Typography>
             </Box>
 
             <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
               <Email color="primary" />
               <Typography variant="body1" color="text.primary">
-                Email: {tenantProfile.email}
+              <span className="font-semibold">Email:</span> {tenantProfile.email}
               </Typography>
             </Box>
           </Box>
@@ -102,27 +102,27 @@ const TenantProfile = () => {
               <Box className="flex flex-col justify-center items-start gap-2 w-[50%]">
                 <Typography variant="body1" color="text.primary" sx={{ mb: 1 }}>
                   <House sx={{ mr: 1, color: "#1976d2" }} />
-                  Address: {tenantProfile.address}
+                  <span className="font-semibold">Address:</span> {tenantProfile.address}
                 </Typography>
                 <Typography variant="body1" color="text.primary" sx={{ mb: 1 }}>
                   <House sx={{ mr: 1, color: "#1976d2" }} />
-                  Unit Number: {tenantProfile.unit_number}
+                  <span className="font-semibold">Unit Number:</span> {tenantProfile.unit_number}
                 </Typography>
                 <Typography variant="body1" color="text.primary" sx={{ mb: 1 }}>
                   <Pets sx={{ mr: 1, color: "#1976d2" }} />
-                  Pet Policy: {tenantProfile.pet_policy}
+                  <span className="font-semibold">Pet Policy:</span> {tenantProfile.pet_policy}
                 </Typography>
                 <Typography variant="body1" color="text.primary" sx={{ mb: 1 }}>
                   <CalendarToday sx={{ mr: 1, color: "#1976d2" }} />
-                  Lease Duration: {tenantProfile.tenant_duration}
+                  <span className="font-semibold">Lease Duration:</span> {tenantProfile.tenant_duration}
                 </Typography>
                 <Typography variant="body1" color="text.primary" sx={{ mb: 1 }}>
                   <CalendarToday sx={{ mr: 1, color: "#1976d2" }} />
-                  Renewal Terms: {tenantProfile.renewal}
+                  <span className="font-semibold">Renewal Terms:</span> {tenantProfile.renewal}
                 </Typography>
                 <Typography variant="body1" color="text.primary" sx={{ mb: 1 }}>
                   <CalendarToday sx={{ mr: 1, color: "#1976d2" }} />
-                  Lease Status: {tenantProfile.lease_status}
+                  <span className="font-semibold">Lease Status:</span> <span className="bg-green-600 text-white p-2 px-4 rounded-lg">{tenantProfile.lease_status}</span>
                 </Typography>
               </Box>
             </div>
@@ -136,19 +136,19 @@ const TenantProfile = () => {
             <Box sx={{ mt: 2 }}>
               <Typography variant="body1" color="text.primary" sx={{ mb: 1 }}>
                 <Payment sx={{ mr: 1, color: "#1976d2" }} />
-                Payment Preference: {tenantProfile.payment_preference}
+                <span className="font-semibold">Payment Preference:</span> {tenantProfile.payment_preference}
               </Typography>
               <Typography variant="body1" color="text.primary" sx={{ mb: 1 }}>
                 <Payment sx={{ mr: 1, color: "#1976d2" }} />
-                Monthly Rent: {tenantProfile.monthly_rent}
+                <span className="font-semibold">Monthly Rent:</span> {tenantProfile.monthly_rent}
               </Typography>
               <Typography variant="body1" color="text.primary" sx={{ mb: 1 }}>
                 <Payment sx={{ mr: 1, color: "#1976d2" }} />
-                Last Payment: {tenantProfile.last_payment}
+                <span className="font-semibold">Last Payment:</span> {tenantProfile.last_payment}
               </Typography>
               <Typography variant="body1" color="text.primary" sx={{ mb: 1 }}>
                 <Payment sx={{ mr: 1, color: "#1976d2" }} />
-                Security Deposit Status: {tenantProfile.security_deposit}
+                <span className="font-semibold">Security Deposit Status:</span> <span className="bg-green-600 text-white p-2 px-4 rounded-lg">{tenantProfile.security_deposit}</span>
               </Typography>
             </Box>
           </Card>
