@@ -2,9 +2,9 @@ import ReactDOM from 'react-dom/client'
 import {createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom'
 import './index.css'
 import Sidemenu from './Sidemenu'
-import Login from './Login'
+import Signin from './Signin'
 import { Tenant } from './Tenant/Tenant'
-import Lease from './Lease/Lease'
+import Lease from './Lease/LeaseManagement'
 import Property from './Property/Property'
 import TenantProfile from './Tenant/TenantProfile'
 import Homepage from './Homepage/Homepage'
@@ -13,7 +13,7 @@ const App=()=>{
   return(
     <div className='flex'>
       <Sidemenu/>
-      <Outlet/>
+      <Outlet />
     </div>
   )
 }
@@ -21,7 +21,7 @@ const App=()=>{
 const Router = createBrowserRouter([
   {
     path: "/",
-    element: <Login />, 
+    element: <Signin />, 
   },
   {
     path: "/user",
