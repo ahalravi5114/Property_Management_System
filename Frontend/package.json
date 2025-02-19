@@ -15,7 +15,11 @@
     "@mui/icons-material": "^6.4.4",
     "@mui/material": "^6.4.4",
     "@tailwindcss/vite": "^4.0.6",
+<<<<<<< HEAD
     "moment": "^2.30.1",
+=======
+    "framer-motion": "^12.4.3",
+>>>>>>> 77dd07c4635dbe4b5e607afd87a81c867caa1ce7
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-icons": "^5.4.0",
