@@ -42,7 +42,7 @@ export default function AuthPage() {
                 name="role"
                 value={formData.role}
                 onChange={handleChange}
-                className="w-full p-2 rounded-lg bg-white/20 text-white border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                className="w-full p-2 rounded-lg bg-white/20 text-black border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400"
               >
                 <option value="Admin">Admin</option>
                 <option value="Property Manager">Property Manager</option>
