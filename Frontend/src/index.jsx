@@ -12,6 +12,7 @@ import Homepage from './Homepage/Homepage'
 import Maintenance from './Maintenance/Maintenance'
 import RequestForm from "./Maintenance/RequestForm";
 
+
 const App=()=>{
   return(
     <div className='flex'>
@@ -24,24 +25,28 @@ const App=()=>{
 const Router = createBrowserRouter([
   {
     path: "/",
+    element: <Homepage />, 
+  },
+ 
+  {
+    path: "/signin",
     element: <Signin />, 
   },
   {
     path: "/user",
     element: <App />,
     children: [
-      {
-        index: true, 
-        element: <Homepage />, 
-      },
+      
       {
         path: "lease",
         element: <Lease />,
       },
+      
       {
         path: "tenant",
         element: <Tenant />,
-      },{
+      },
+      {
          path:"tenantProfile",
          element:<TenantProfile/>
       },
