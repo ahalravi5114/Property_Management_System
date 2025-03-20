@@ -5,7 +5,8 @@ import './index.css'
 import Sidemenu from './Sidemenu'
 import Signin from './Signin'
 import { Tenant } from './Tenant/Tenant'
-import Lease from './Lease/LeaseManagement'
+import Lease from './Lease/LeasePage'
+import LeaseNotifications from "./Lease/LeaseNotifications";
 import Property from "./Property/Property";
 import TenantProfile from './Tenant/TenantProfile'
 import Homepage from './Homepage/Homepage'
@@ -37,6 +38,10 @@ const Router = createBrowserRouter([
       {
         path: "lease",
         element: <Lease />,
+      },
+      {
+        path: "leasenotifications",
+        element: <LeaseNotifications />,
       },
       {
         path: "tenant",
