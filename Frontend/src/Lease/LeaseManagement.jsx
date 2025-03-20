@@ -5,10 +5,10 @@ import { Typography, Box, Grid } from "@mui/material";
 
 const LeaseManagement = () => {
   const [leases, setLeases] = useState([
-    { tenantName: "John Doe", startDate: "2024-01-01", endDate: "2025-01-01", agreement: "#", status: "Active" },
-    { tenantName: "Alice Smith", startDate: "2023-03-15", endDate: "2024-03-15", agreement: "#", status: "Active" },
-    { tenantName: "David Johnson", startDate: "2023-07-10", endDate: "2024-07-10", agreement: "#", status: "Active" },
-    { tenantName: "Emma Williams", startDate: "2023-12-01", endDate: "2024-12-01", agreement: "#", status: "Active" }
+    { tenantName: "John Doe", startDate: "2024-01-01", endDate: "2025-01-01", agreement: "#", status: "Active", address: "123 Maple St, Springfield, IL",image:"https://ik.imagekit.io/zcdsz07ad/documents.jpg?updatedAt=1739960886177"},
+    { tenantName: "Alice Smith", startDate: "2023-03-15", endDate: "2024-03-15", agreement: "#", status: "Active", address: "123 Maple St, Springfield, IL",image:"https://ik.imagekit.io/zcdsz07ad/documents.jpg?updatedAt=1739960886177" },
+    { tenantName: "David Johnson", startDate: "2023-07-10", endDate: "2024-07-10", agreement: "#", status: "Active", address: "123 Maple St, Springfield, IL",image:"https://ik.imagekit.io/zcdsz07ad/documents.jpg?updatedAt=1739960886177"},
+    { tenantName: "Emma Williams", startDate: "2023-12-01", endDate: "2024-12-01", agreement: "#", status: "Active" , address: "123 Maple St, Springfield, IL",image:"https://ik.imagekit.io/zcdsz07ad/documents.jpg?updatedAt=1739960886177"}
   ]);
 
   const addLease = (lease) => {

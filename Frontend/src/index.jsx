@@ -1,3 +1,4 @@
+import React from "react";
 import ReactDOM from 'react-dom/client'
 import {createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom'
 import { useLocation } from 'react-router-dom';
@@ -6,7 +7,7 @@ import Sidemenu from './Sidemenu'
 import Signin from './Signin'
 import { Tenant } from './Tenant/Tenant'
 import Lease from './Lease/LeaseManagement'
-import Property from './Property/Property'
+import Property from "./Property/Property";
 import TenantProfile from './Tenant/TenantProfile'
 import Homepage from './Homepage/Homepage'
 import Maintenance from './Maintenance/Maintenance'
@@ -16,6 +17,9 @@ import Accountantlist from './Dashboard/Accountantlist';
 import Teanantlist from './Dashboard/Teanantlist';
 import Maintainencelist from './Dashboard/Maintainencelist';
 import Projectmanager from './Dashboard/Projectmanagerlist';
+import RequestForm from "./Maintenance/RequestForm";
+
+
 const App=()=>{
   const location = useLocation();
   const dashboardPages = [
@@ -36,24 +40,28 @@ const App=()=>{
 const Router = createBrowserRouter([
   {
     path: "/",
+    element: <Homepage />, 
+  },
+ 
+  {
+    path: "/signin",
     element: <Signin />, 
   },
   {
     path: "/user",
     element: <App />,
     children: [
-      {
-        index: true, 
-        element: <Homepage />, 
-      },
+      
       {
         path: "lease",
         element: <Lease />,
       },
+      
       {
         path: "tenant",
         element: <Tenant />,
-      },{
+      },
+      {
          path:"tenantProfile",
          element:<TenantProfile/>
       },
@@ -84,7 +92,12 @@ const Router = createBrowserRouter([
       {
         path: "projectmanagerlist",
         element: <Projectmanager />,
-      }
+      },
+      { path: "requestform", 
+        element: <RequestForm /> 
+      },
+      
+      
     ],
   },
 ]);
