@@ -9,6 +9,8 @@ import Property from './Property/Property'
 import TenantProfile from './Tenant/TenantProfile'
 import Homepage from './Homepage/Homepage'
 import Maintenance from './Maintenance/Maintenance'
+import Payment from './Payment/Payment'
+
 const App=()=>{
   return(
     <div className='flex'>
@@ -49,6 +51,10 @@ const Router = createBrowserRouter([
       {
         path: "maintenance",
         element: <Maintenance />,
+      },
+      {
+        path: "payment",
+        element: <Payment />,
       },
     ],
   },
