@@ -1,5 +1,5 @@
 import { Card, Avatar, Typography, Box, Divider, Button } from "@mui/material";
-import { Phone, Email, Cake, House, Payment, CalendarToday, Pets, Edit } from "@mui/icons-material";
+import { Phone, Email, House, Payment, CalendarToday, Pets, Edit } from "@mui/icons-material";
 
 const TenantProfile = () => {
   const tenantProfile = {
@@ -65,12 +65,12 @@ const TenantProfile = () => {
               mt: 2,
             }}
           >
-            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+            {/* <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
               <Cake color="primary" />
               <Typography variant="body1" color="text.primary">
                 <span className="font-semibold">Date of Birth:</span> {tenantProfile.dob}
               </Typography>
-            </Box>
+            </Box> */}
 
             <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
               <Phone color="primary" />
