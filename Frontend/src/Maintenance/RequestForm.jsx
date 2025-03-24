@@ -1,71 +1,107 @@
-/*import React from "react";
-import { useForm } from "react-hook-form";
+import { useState } from 'react';
 
-const RequestForm = () => {
+const RequestForm = ({ onSubmit }) => {
+  const [formData, setFormData] = useState({
+    name: '',
+    location: '',
+    problem: '',
+    phone: '',
+    email: '',
+    requestType: 'Property',
+  });
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
 
-  const onSubmit = (data) => {
-    console.log("Form Data Submitted:", data);
-    alert("Request Submitted Successfully!");
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onSubmit(formData);
+    setFormData({ name: '', location: '', problem: '', phone: '', email: '', requestType: 'Property' });
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100">
-      <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-md">
-        <h2 className="text-xl font-bold text-center mb-4">Like Request Form</h2>
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-         
+    <div className="min-h-screen p-8 bg-gradient-to-b from-blue-900 to-orange-300 text-white shadow-lg flex justify-center items-center">
+      <div className="max-w-lg w-full">
+        <h2 className="text-4xl font-bold mb-8 text-center">Maintenance Request Form</h2>
+        <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <label className="block text-sm font-medium">Name</label>
             <input
               type="text"
-              {...register("name", { required: "Name is required" })}
-              className="w-full p-2 border rounded"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              required
+              className="w-full p-3 mt-1 border rounded-lg text-black"
             />
-            {errors.name && <p className="text-red-500 text-sm">{errors.name.message}</p>}
           </div>
 
-          
+          <div>
+            <label className="block text-sm font-medium">Location</label>
+            <input
+              type="text"
+              name="location"
+              value={formData.location}
+              onChange={handleChange}
+              required
+              className="w-full p-3 mt-1 border rounded-lg text-black"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium">Problem</label>
+            <textarea
+              name="problem"
+              value={formData.problem}
+              onChange={handleChange}
+              required
+              className="w-full p-3 mt-1 border rounded-lg text-black"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium">Phone</label>
+            <input
+              type="text"
+              name="phone"
+              value={formData.phone}
+              onChange={handleChange}
+              required
+              className="w-full p-3 mt-1 border rounded-lg text-black"
+            />
+          </div>
+
           <div>
             <label className="block text-sm font-medium">Email</label>
             <input
               type="email"
-              {...register("email", { required: "Email is required" })}
-              className="w-full p-2 border rounded"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+              className="w-full p-3 mt-1 border rounded-lg text-black"
             />
-            {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
           </div>
 
-          
           <div>
             <label className="block text-sm font-medium">Request Type</label>
-            <select {...register("requestType", { required: "Please select a request type" })}
-              className="w-full p-2 border rounded">
-              <option value="">Select...</option>
-              <option value="like">Like</option>
-              <option value="comment">Comment</option>
-              <option value="share">Share</option>
+            <select
+              name="requestType"
+              value={formData.requestType}
+              onChange={handleChange}
+              required
+              className="w-full p-3 mt-1 border rounded-lg text-black"
+            >
+              <option value="Property">Property</option>
+              <option value="Lease">Lease</option>
+              <option value="Staff">Staff</option>
             </select>
-            {errors.requestType && <p className="text-red-500 text-sm">{errors.requestType.message}</p>}
           </div>
 
-         
-          <div>
-            <label className="flex items-center space-x-2">
-              <input type="checkbox" {...register("compliance", { required: "You must agree to the compliance terms" })} />
-              <span className="text-sm">I agree to the compliance terms</span>
-            </label>
-            {errors.compliance && <p className="text-red-500 text-sm">{errors.compliance.message}</p>}
-          </div>
-
-         
-          <button type="submit" className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600">
-            Submit Request
+          <button type="submit" className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+            Submit
           </button>
         </form>
       </div>
@@ -73,73 +109,4 @@ const RequestForm = () => {
   );
 };
 
-export default RequestForm;*/
-/*import React from "react";
-import { useForm } from "react-hook-form";
-
-const RequestForm = () => {
-  console.log("✅ RequestForm component is rendering..."); // Debug message
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
-
-  const onSubmit = (data) => {
-    console.log("Form Data Submitted:", data);
-    alert("Request Submitted Successfully!");
-  };
-
-  return (
-    <div>
-      <h1>Request Form Page</h1> 
-      <div className="flex justify-center items-center min-h-screen bg-gray-100">
-        <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-md">
-          <h2 className="text-xl font-bold text-center mb-4">Like Request Form</h2>
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium">Name</label>
-              <input
-                type="text"
-                {...register("name", { required: "Name is required" })}
-                className="w-full p-2 border rounded"
-              />
-              {errors.name && <p className="text-red-500 text-sm">{errors.name.message}</p>}
-            </div>
-            <button type="submit" className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600">
-              Submit Request
-            </button>
-          </form>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export default RequestForm;*/
-import React from "react";
-
-const RequestForm = () => {
-  console.log("✅ RequestForm component is rendering..."); // Debugging
-  
-  return (
-    <div
-      style={{
-        backgroundColor: "white",
-        color: "black",
-        padding: "20px",
-        border: "2px solid red", // Force visibility
-        minHeight: "200px", // Ensure it takes space
-      }}
-    >
-      <h1>Request Form Page</h1>
-      <p>This is a test paragraph.</p>
-    </div>
-  );
-};
-
 export default RequestForm;
-
-
-
