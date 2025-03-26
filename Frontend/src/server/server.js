@@ -13,10 +13,12 @@ const PORT = 5000;
 app.use(express.json());
 app.use(cors());
 
-// MongoDB Connection
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log("MongoDB Connected"))
-  .catch((err) => console.error("MongoDB Error:", err));
+mongoose.connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+})
+.then(() => console.log("Connected to MongoDB"))
+.catch(err => console.error("MongoDB connection error:", err));
 
 // Dynamic Schema Creation Function
 const createUserModel = (collectionName) => {
@@ -55,13 +57,20 @@ const Maintenance = mongoose.model("maintenance", new mongoose.Schema({
     requestType: { type: String, required: true },
   }));
 
-
+// const TenantProfile = mongoose.model("tenantProfile", new mongoose.Schema({
+//     name: { type: String, required: true },
+//     email: { type: String, required: true },
+//     phone: { type: String, required: true },
+//     nationality: { type: String, required: true },
+//     leaseId: { type: String },
+//     paymentId: { type: Boolean },
+//   }));
 
 // Signup Route
 app.post("/signup", async (req, res) => {
     try {
       const { role, email, password } = req.body;
-      console.log("Received Data:", req.body); // ✅ Debug Request Data
+      console.log("Received Data:", req.body); //✅Debug Request Data
   
       if (!role || !email || !password) {
         return res.status(400).json({ error: "All fields are required" });
@@ -134,5 +143,11 @@ app.post("/submit-maintenance", async (req, res) => {
     }
   });
 
+app.post("/getTenantProfile", async (req,res)=>{
+   const { name,email,phone,nationality } = req.body;
+   if(!name , !phone,!nationality){
+
+   }
+})
 // Start Server
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
