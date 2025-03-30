@@ -5,9 +5,9 @@ const DashboardSidebar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   return (
-    <div className="w-1/5 bg-gray-800 text-white p-5 min-h-screen">
-      <h2 className="text-2xl font-bold mb-6">REAL ESTATE</h2>
-      <ul>
+    <div className="w-1/7 bg-gray-800 text-white p-5 min-h-screen">
+      <h2 className="text-2xl font-bold mb-6">ADMIN</h2>
+      <ul className="space-y-2">
         <li className="p-2 hover:bg-gray-700">
           <Link to="/user/dashboard">Dashboard</Link>
         </li>

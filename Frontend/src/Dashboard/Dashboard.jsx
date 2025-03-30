@@ -3,9 +3,9 @@ import { FaUsers, FaUserTie, FaUser, FaHome, FaBuilding, FaHotel } from "react-i
 
 const Dashboard = () => {
   const stats = [
-    { icon: <FaUsers className="text-blue-500 text-5xl" />, label: "Registered Users", value: 4 },
-    { icon: <FaUserTie className="text-green-500 text-5xl" />, label: "Agents", value: 3 },
-    { icon: <FaUser className="text-red-500 text-5xl" />, label: "Builder", value: 1 },
+    { icon: <FaUsers className="text-blue-500 text-5xl" />, label: "Tenants", value: 4 },
+    { icon: <FaUserTie className="text-green-500 text-5xl" />, label: "Property Managers", value: 3 },
+    { icon: <FaUser className="text-red-500 text-5xl" />, label: "Accountants", value: 1 },
     { icon: <FaHome className="text-blue-500 text-5xl" />, label: "Properties", value: 6 },
     { icon: <FaBuilding className="text-gray-500 text-5xl" />, label: "No. of Buildings", value: 0 },
     { icon: <FaHotel className="text-yellow-500 text-5xl" />, label: "No. of Apartments", value: 2 },

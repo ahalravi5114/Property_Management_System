@@ -12,6 +12,7 @@ import Property from "./Property/Property";
 import TenantProfile from './Tenant/TenantProfile'
 import Homepage from './Homepage/Homepage'
 import Maintenance from './Maintenance/Maintenance'
+import TenantBoarding from './Tenant/TenantBoarding'
 import Dashboard from './Dashboard/Dashboard'
 import DashboardSidebar from './Dashboard/DashboardSidebar'
 import Accountantlist from './Dashboard/Accountantlist';
@@ -70,6 +71,10 @@ const Router = createBrowserRouter([
          path:"tenantProfile",
          element:<TenantProfile/>
       },
+      {
+        path:"tenantBoarding",
+        element:<TenantBoarding/>
+     },
       {
         path: "property",
         element: <Property />,
