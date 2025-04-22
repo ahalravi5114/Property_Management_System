@@ -1,90 +1,109 @@
-import { Card, CardContent, CardActions, Button, Typography, Box, TextField, Grid } from "@mui/material";
 import { useState } from "react";
-import moment from 'moment'; 
+import moment from "moment";
+import axios from "axios";
 
-const LeaseCard = ({ lease, index, updateLease }) => {
+const LeaseCard = ({ lease, updateLease }) => {
   const [showRenew, setShowRenew] = useState(false);
   const [newEndDate, setNewEndDate] = useState("");
 
-  const formattedStartDate = moment(lease.startDate).format('MMMM DD, YYYY');
-  const formattedEndDate = moment(lease.endDate).format('MMMM DD, YYYY');
+  const formattedStartDate = moment(lease.startDate).format("MMMM DD, YYYY");
+  const formattedEndDate = moment(lease.endDate).format("MMMM DD, YYYY");
+
+  // Handle Lease Renewal
+  const handleRenewLease = async () => {
+    if (!newEndDate) return;
+    try {
+      await axios.put(`http://localhost:5000/leases/${lease._id}`, {
+        status: "renewed",
+        endDate: newEndDate,
+      });
+      updateLease(lease._id, "renewed", newEndDate);
+      setShowRenew(false);
+    } catch (error) {
+      console.error("Error renewing lease:", error);
+    }
+  };
+
+  // Handle Lease Termination
+  const handleTerminateLease = async () => {
+    try {
+      await axios.put(`http://localhost:5000/leases/${lease._id}`, {
+        status: "terminated",
+      });
+      updateLease(lease._id, "terminated");
+    } catch (error) {
+      console.error("Error terminating lease:", error);
+    }
+  };
 
   return (
-    <Card sx={{ 
-      boxShadow: 3, 
-      borderRadius: "12px", 
-      p: 3, 
-      transition: "0.3s", 
-      "&:hover": { boxShadow: 6 },
-      height: "100%"
-    }}>
-      <CardContent>
-        <Grid container spacing={2} alignItems="center">
-          <Grid item xs={4}>
-            <Box 
-              component="img"
-              src={lease.image}
-              alt="Property"
-              sx={{ width:100, height:100 , borderRadius: "8px" }}
-            />
-          </Grid>
-          <Grid item xs={8}>
-            <Typography variant="h6" sx={{ fontWeight: "bold", mb: 1, color: "#333" }}>{lease.tenantName}</Typography>
-            <Typography variant="body2" color="text.secondary" gutterBottom>Start: {formattedStartDate}</Typography>
-            <Typography variant="body2" color="text.secondary" gutterBottom>End: {formattedEndDate}</Typography>
-            <Typography variant="body2" color="text.secondary" gutterBottom>Address: {lease.address}</Typography>
-            <Typography variant="body2" color={lease.status === "Active" ? "success.main" : "error.main"} sx={{ fontWeight: "bold" }}>
-              {lease.status}
-            </Typography>
-            <a href={lease.agreement} target="_blank" rel="noopener noreferrer" style={{ color: "#007BFF", textDecoration: "underline", display: "block", marginTop: "12px" }}>
+    <div className="bg-white shadow-md rounded-lg p-4 transition-transform transform hover:shadow-lg hover:scale-105">
+      <div className="flex items-center gap-4">
+        {lease.propertyImage && (
+          <img
+            src={`data:image/png;base64,${lease.propertyImage}`}
+            alt="Property"
+            className="w-24 h-24 rounded-lg object-cover"
+          />
+        )}
+        <div className="flex-1">
+          <h2 className="text-lg font-bold text-gray-800">{lease.tenantName}</h2>
+          <p className="text-sm text-gray-600">Start: {formattedStartDate}</p>
+          <p className="text-sm text-gray-600">End: {formattedEndDate}</p>
+          <p className="text-sm text-gray-600">Property Address: {lease.propertyAddress || "N/A"}</p>
+          <p
+            className={`text-sm font-bold ${
+              lease.status === "Active" ? "text-green-600" : "text-red-600"
+            }`}
+          >
+            {lease.status}
+          </p>
+          {lease.agreement && (
+            <a
+              href={`data:application/pdf;base64,${lease.agreement}`}
+              download="Lease_Agreement.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-600 underline mt-2 inline-block"
+            >
               View Agreement
             </a>
-          </Grid>
-        </Grid>
-      </CardContent>
-      <CardActions sx={{ justifyContent: "space-between", pt: 0 }}>
-        <Button 
-          variant="contained" 
-          color="primary" 
+          )}
+        </div>
+      </div>
+
+      <div className="flex justify-between mt-4">
+        <button
+          className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
           onClick={() => setShowRenew(true)}
-          sx={{ borderRadius: "8px" }}
         >
           Renew
-        </Button>
-        <Button 
-          variant="contained" 
-          color="error" 
-          onClick={() => updateLease(index, "terminated")}
-          sx={{ borderRadius: "8px" }}
+        </button>
+        <button
+          className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700"
+          onClick={handleTerminateLease}
         >
           Terminate
-        </Button>
-      </CardActions>
+        </button>
+      </div>
+
       {showRenew && (
-        <Box sx={{ p: 3, mt: 2, borderTop: "1px solid #eee" }}>
-          <TextField
+        <div className="mt-4 border-t pt-3">
+          <input
             type="date"
-            fullWidth
-            variant="outlined"
-            sx={{ mb: 2, borderRadius: "4px" }}
+            className="w-full p-2 border rounded mb-2"
             value={newEndDate}
             onChange={(e) => setNewEndDate(e.target.value)}
           />
-          <Button
-            variant="contained"
-            color="success"
-            fullWidth
-            onClick={() => {
-              updateLease(index, "renewed", newEndDate);
-              setShowRenew(false);
-            }}
-            sx={{ borderRadius: "8px" }}
+          <button
+            className="bg-green-600 text-white px-4 py-2 rounded-lg w-full hover:bg-green-700"
+            onClick={handleRenewLease}
           >
             Confirm Renewal
-          </Button>
-        </Box>
+          </button>
+        </div>
       )}
-    </Card>
+    </div>
   );
 };
 
