@@ -20,6 +20,7 @@ import Teanantlist from './Dashboard/Teanantlist';
 import Maintainencelist from './Dashboard/Maintainencelist';
 import Projectmanager from './Dashboard/Projectmanagerlist';
 import RequestForm from "./Maintenance/RequestForm";
+import Payment from "./Payment/Payment"
 
 
 const App=()=>{
@@ -106,6 +107,10 @@ const Router = createBrowserRouter([
       {
         path: "projectmanagerlist",
         element: <Projectmanager />,
+      },
+      {
+        path: "payment",
+        element: <Payment />,
       },
      
       
