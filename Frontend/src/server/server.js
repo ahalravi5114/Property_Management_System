@@ -364,3 +364,65 @@ app.get("/getleases", async (req, res) => {
 
 // Start Server
 app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));
+// 🧾 Accountant List APIs
+
+// Get All Accountants
+app.get("/api/accountants", async (req, res) => {
+  try {
+    const accountants = await Accountant.find();
+    res.json(accountants);
+  } catch (err) {
+    console.error("❌ Fetch Accountants Error:", err);
+    res.status(500).json({ error: "Failed to fetch accountants" });
+  }
+});
+
+// Add Accountant
+app.post("/api/accountants", async (req, res) => {
+  try {
+    const { role, email, password } = req.body;
+
+    if (!email || !password || !role) {
+      return res.status(400).json({ error: "All fields are required" });
+    }
+
+    const existingUser = await Accountant.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ error: "Email already exists" });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const newAccountant = new Accountant({ role, email, password: hashedPassword });
+    await newAccountant.save();
+
+    res.status(201).json({ message: "Accountant added successfully", accountant: newAccountant });
+  } catch (err) {
+    console.error("❌ Add Accountant Error:", err);
+    res.status(500).json({ error: "Failed to add accountant" });
+  }
+});
+
+// Delete Accountant
+app.delete("/api/accountants/:id", async (req, res) => {
+  try {
+    const deleted = await Accountant.findByIdAndDelete(req.params.id);
+    if (!deleted) return res.status(404).json({ error: "Accountant not found" });
+    res.json({ message: "Accountant deleted successfully" });
+  } catch (err) {
+    console.error("❌ Delete Accountant Error:", err);
+    res.status(500).json({ error: "Failed to delete accountant" });
+  }
+});
+
+// Update Accountant (email or role)
+app.put("/api/accountants/:id", async (req, res) => {
+  try {
+    const updateData = req.body;
+    const updated = await Accountant.findByIdAndUpdate(req.params.id, updateData, { new: true });
+    if (!updated) return res.status(404).json({ error: "Accountant not found" });
+    res.json({ message: "Accountant updated", accountant: updated });
+  } catch (err) {
+    console.error("❌ Update Accountant Error:", err);
+    res.status(500).json({ error: "Failed to update accountant" });
+  }
+});
