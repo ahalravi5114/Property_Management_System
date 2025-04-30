@@ -372,5 +372,113 @@ app.get("/getleases", async (req, res) => {
   }
 });
 
-// Start Server
+const TenantProfile = new mongoose.Schema(
+  {
+    tenant_id: { type: String, required: true, unique: true },
+    name: { type: String, required: true },
+    email: { type: String, required: true, unique: true },
+    phone: { type: String, required: true },
+    nationality: { type: String, required: true },
+    profileUrl: { type: String }, // URL to the profile image
+    createdAt: { type: Date, default: Date.now }
+  },
+  { versionKey: false } // Disable the version key (__v)
+);
+
+const Tenantprofile = mongoose.model('TenantProfile', TenantProfile);
+
+app.post('/tenantProfile', async (req, res) => {
+  try {
+    const { id, name, email, phone, nationality, profileUrl } = req.body;
+
+    // Validation
+    if (!id || !name || !email || !phone || !nationality) {
+      return res.status(400).json({ 
+        success: false,
+        message: "All fields except profileUrl are required"
+      });
+    }
+
+    // Create or update profile based on tenant_id
+    const profile = await Tenantprofile.findOneAndUpdate(
+      { tenant_id: id }, // search using custom tenant_id
+      { 
+        tenant_id: id,
+        name,
+        email,
+        phone,
+        nationality,
+        profileUrl: profileUrl || null,
+        updatedAt: new Date()
+      },
+      {
+        new: true,         // return the updated document
+        upsert: true,      // create if not found
+        runValidators: true
+      }
+    );
+
+    const isNew = profile.createdAt?.getTime() === profile.updatedAt?.getTime();
+
+    res.status(200).json({
+      success: true,
+      message: isNew ? "Profile created successfully" : "Profile updated successfully",
+      data: profile
+    });
+  } catch (error) {
+    console.error("❌ Profile Creation/Update Error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+      error: error.message
+    });
+  }
+});
+
+// 🔵 Get All Profiles
+app.get('/displayTenantProfile', async (req, res) => {
+  try {
+    const profiles = await Tenantprofile.find().sort({ createdAt: -1 }); // Newest first
+    
+    res.json({
+      success: true,
+      count: profiles.length,
+      data: profiles
+    });
+  } catch (error) {
+    console.error("❌ Profiles Fetch Error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error fetching profiles"
+    });
+  }
+});
+
+app.get('/displayTenantProfile/:id', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const profile = await Tenantprofile.findOne({ tenant_id: id });
+
+    if (!profile) {
+      return res.status(404).json({
+        success: false,
+        message: "Tenant profile not found"
+      });
+    }
+
+    res.json({
+      success: true,
+      data: profile
+    });
+  } catch (error) {
+    console.error("❌ Error fetching tenant profile by tenant_id:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error while fetching profile"
+    });
+  }
+});
+
+// 🚀 Start Server
 app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));

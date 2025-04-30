@@ -121,7 +121,7 @@ import axios from "axios";
 export default function AuthPage() {
   const [isSignUp, setIsSignUp] = useState(false);
   const [formData, setFormData] = useState({
-    role: "admin",
+    role: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -147,11 +147,12 @@ export default function AuthPage() {
 
     try {
       const { data } = await axios.post(endpoint, formData);
+      console.log(data);
       alert(data.message);
+      
 
       if (!isSignUp) {
         localStorage.setItem("token", data.token);
-
         // Redirect Based on User Role
         switch (data.role) {
           case "admin":
@@ -161,7 +162,7 @@ export default function AuthPage() {
             window.location.href = "/dashboard";
             break;
           case "tenant":
-            window.location.href = "/dashboard";
+            window.location.href = "/user/tenantDashboard";
             break;
           case "accountant":
             window.location.href = "/dashboard";
