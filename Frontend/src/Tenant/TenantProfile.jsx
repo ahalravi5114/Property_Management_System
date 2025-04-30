@@ -1,14 +1,11 @@
-import { Card, Avatar, Typography, Box, Divider, Button } from "@mui/material";
+import { Card, Avatar, Typography, Box, Divider, Button,CircularProgress } from "@mui/material";
 import { Phone, Email, House, Payment, CalendarToday, Pets, Edit } from "@mui/icons-material";
+import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
 
 const TenantProfile = () => {
-  const tenantProfile = {
-    name: "Alice Doe",
+  const defaultProfile = {
     avatarUrl: "https://ik.imagekit.io/varsh0506/Beauroi/profile_tenant.jpg?updatedAt=1739858483160",
-    nationality: "American",
-    dob: "01/01/1990",
-    phone: "(123) 456-7890",
-    email: "sampletenant@gmail.com",
     address: "1234, Sample Street, Apartment 123",
     unit_number: "123",
     pet_policy: "Allowed",
@@ -20,15 +17,95 @@ const TenantProfile = () => {
     last_payment: "01/01/2022",
     security_deposit: "Paid",
   };
+  const [tenantProfile, setTenantProfile] = useState(defaultProfile);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
+  useEffect(() => {
+    const fetchTenantProfile = async () => {
+      try {
+        const response = await fetch('http://localhost:5000/displayTenantProfile/6808acaddb7e223ebebe1fef', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            // Add authorization header if needed
+            // 'Authorization': `Bearer ${localStorage.getItem('token')}`
+          },
+        });
+        const data = await response.json();
+        
+        if (!data.success) {
+          setError(data.message);
+        } else {
+          // Merge the fetched data with default profile
+          // fetched data will override default values where they exist
+          setTenantProfile(prevProfile => ({
+            ...prevProfile,
+            ...data.data  // assuming the profile data is in data.profile
+          }));
+        }
+      } catch (err) {
+        setError('Failed to fetch profile data');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTenantProfile();
+  }, []);
+
+  if (loading) {
+    return (
+      <Box 
+        sx={{ 
+          minHeight: "100vh", 
+          display: "flex", 
+          justifyContent: "center", 
+          alignItems: "center",
+          marginLeft: "250px"
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    );
+  }
+
+  if (error) {
+    return (
+      <Box 
+        sx={{ 
+          minHeight: "100vh", 
+          display: "flex", 
+          flexDirection: "column",
+          gap: 2,
+          justifyContent: "center", 
+          alignItems: "center",
+          "width": "100%",
+        }}
+      >
+        <Typography variant="h6" color="error">
+          {error}
+        </Typography>
+        <Link to="/user/tenanteditProfile">
+          <Button 
+            variant="contained" 
+            color="primary"
+            startIcon={<Edit />}
+          >
+            Create Profile
+          </Button>
+        </Link>
+      </Box>
+    );
+  }
   return (
-    <Box sx={{ minHeight: "100vh", display: "flex", p: 3, marginLeft: "300px", width: "70%", backgroundColor: "#f0f2f5" }}>
+    <Box sx={{ minHeight: "100vh", display: "flex", p: 3, marginLeft: "250px", width: "100%", backgroundColor: "#f0f2f5" }}>
       <Box sx={{ maxWidth: 1200, width: "100%", p: 3 }}>
         <Box sx={{ display: "flex", alignItems: "center", mb: 4, justifyContent: "space-evenly", width: "100%" }}>
           <Box sx={{ display: "flex", alignItems: "center", gap: 4 }}>
             <Avatar
               alt="Tenant Profile"
-              src={tenantProfile.avatarUrl}
+              src={tenantProfile.profileUrl}
               sx={{
                 width: 150,
                 height: 150,
@@ -156,9 +233,11 @@ const TenantProfile = () => {
 
         <Divider sx={{ my: 3 }} />
         <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
+          <Link to="/user/tenanteditProfile" >
           <Button variant="contained" color="primary" sx={{ borderRadius: "8px", padding: "8px 24px" }} startIcon={<Edit />}>
             Edit Profile
           </Button>
+          </Link>
         </Box>
       </Box>
     </Box>

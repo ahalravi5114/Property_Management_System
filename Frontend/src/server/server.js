@@ -362,67 +362,113 @@ app.get("/getleases", async (req, res) => {
   }
 });
 
-// Start Server
+const TenantProfile = new mongoose.Schema(
+  {
+    tenant_id: { type: String, required: true, unique: true },
+    name: { type: String, required: true },
+    email: { type: String, required: true, unique: true },
+    phone: { type: String, required: true },
+    nationality: { type: String, required: true },
+    profileUrl: { type: String }, // URL to the profile image
+    createdAt: { type: Date, default: Date.now }
+  },
+  { versionKey: false } // Disable the version key (__v)
+);
+
+const Tenantprofile = mongoose.model('TenantProfile', TenantProfile);
+
+app.post('/tenantProfile', async (req, res) => {
+  try {
+    const { id, name, email, phone, nationality, profileUrl } = req.body;
+
+    // Validation
+    if (!id || !name || !email || !phone || !nationality) {
+      return res.status(400).json({ 
+        success: false,
+        message: "All fields except profileUrl are required"
+      });
+    }
+
+    // Create or update profile based on tenant_id
+    const profile = await Tenantprofile.findOneAndUpdate(
+      { tenant_id: id }, // search using custom tenant_id
+      { 
+        tenant_id: id,
+        name,
+        email,
+        phone,
+        nationality,
+        profileUrl: profileUrl || null,
+        updatedAt: new Date()
+      },
+      {
+        new: true,         // return the updated document
+        upsert: true,      // create if not found
+        runValidators: true
+      }
+    );
+
+    const isNew = profile.createdAt?.getTime() === profile.updatedAt?.getTime();
+
+    res.status(200).json({
+      success: true,
+      message: isNew ? "Profile created successfully" : "Profile updated successfully",
+      data: profile
+    });
+  } catch (error) {
+    console.error("❌ Profile Creation/Update Error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+      error: error.message
+    });
+  }
+});
+
+// 🔵 Get All Profiles
+app.get('/displayTenantProfile', async (req, res) => {
+  try {
+    const profiles = await Tenantprofile.find().sort({ createdAt: -1 }); // Newest first
+    
+    res.json({
+      success: true,
+      count: profiles.length,
+      data: profiles
+    });
+  } catch (error) {
+    console.error("❌ Profiles Fetch Error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error fetching profiles"
+    });
+  }
+});
+
+app.get('/displayTenantProfile/:id', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const profile = await Tenantprofile.findOne({ tenant_id: id });
+
+    if (!profile) {
+      return res.status(404).json({
+        success: false,
+        message: "Tenant profile not found"
+      });
+    }
+
+    res.json({
+      success: true,
+      data: profile
+    });
+  } catch (error) {
+    console.error("❌ Error fetching tenant profile by tenant_id:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error while fetching profile"
+    });
+  }
+});
+
+// 🚀 Start Server
 app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));
-// 🧾 Accountant List APIs
-
-// Get All Accountants
-app.get("/api/accountants", async (req, res) => {
-  try {
-    const accountants = await Accountant.find();
-    res.json(accountants);
-  } catch (err) {
-    console.error("❌ Fetch Accountants Error:", err);
-    res.status(500).json({ error: "Failed to fetch accountants" });
-  }
-});
-
-// Add Accountant
-app.post("/api/accountants", async (req, res) => {
-  try {
-    const { role, email, password } = req.body;
-
-    if (!email || !password || !role) {
-      return res.status(400).json({ error: "All fields are required" });
-    }
-
-    const existingUser = await Accountant.findOne({ email });
-    if (existingUser) {
-      return res.status(400).json({ error: "Email already exists" });
-    }
-
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const newAccountant = new Accountant({ role, email, password: hashedPassword });
-    await newAccountant.save();
-
-    res.status(201).json({ message: "Accountant added successfully", accountant: newAccountant });
-  } catch (err) {
-    console.error("❌ Add Accountant Error:", err);
-    res.status(500).json({ error: "Failed to add accountant" });
-  }
-});
-
-// Delete Accountant
-app.delete("/api/accountants/:id", async (req, res) => {
-  try {
-    const deleted = await Accountant.findByIdAndDelete(req.params.id);
-    if (!deleted) return res.status(404).json({ error: "Accountant not found" });
-    res.json({ message: "Accountant deleted successfully" });
-  } catch (err) {
-    console.error("❌ Delete Accountant Error:", err);
-    res.status(500).json({ error: "Failed to delete accountant" });
-  }
-});
-
-// Update Accountant (email or role)
-app.put("/api/accountants/:id", async (req, res) => {
-  try {
-    const updateData = req.body;
-    const updated = await Accountant.findByIdAndUpdate(req.params.id, updateData, { new: true });
-    if (!updated) return res.status(404).json({ error: "Accountant not found" });
-    res.json({ message: "Accountant updated", accountant: updated });
-  } catch (err) {
-    console.error("❌ Update Accountant Error:", err);
-    res.status(500).json({ error: "Failed to update accountant" });
-  }
-});

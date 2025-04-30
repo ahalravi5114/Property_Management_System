@@ -1,4 +1,3 @@
-import React from "react";
 import ReactDOM from 'react-dom/client'
 import {createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom'
 import { useLocation } from 'react-router-dom';
@@ -20,8 +19,15 @@ import Teanantlist from './Dashboard/Teanantlist';
 import Maintainencelist from './Dashboard/Maintainencelist';
 import Projectmanager from './Dashboard/Projectmanagerlist';
 import RequestForm from "./Maintenance/RequestForm";
+<<<<<<< HEAD
 import Payment from "./Payment/Payment";
 
+=======
+import TenantSidebar from "./Tenant/TenantSidebar";
+import TenantDashboard from './Tenant/TenantDashboard';
+import TenanteditProfile from './Tenant/TenanteditProfile';
+import TenantOffboarding from './Tenant/TenantOffboarding';
+>>>>>>> 9b66f2b468a396b49d78b88322204fccd66ca5c1
 
 const App=()=>{
   const location = useLocation();
@@ -32,9 +38,21 @@ const App=()=>{
     "/user/maintainencelist",
     "/user/projectmanagerlist",
   ];
+
+  const tenantPages = [
+    "/user/tenantProfile",
+    "/user/tenantDashboard",
+    "/user/tenantBoarding",
+    "/user/tenanteditProfile",
+    "/user/tenantOffboarding",
+  ];
+
   return(
     <div className='flex'>
-        {dashboardPages.includes(location.pathname) ? <DashboardSidebar /> : <Sidemenu />}
+        {dashboardPages.includes(location.pathname) && <DashboardSidebar />}
+        {tenantPages.includes(location.pathname) && <TenantSidebar />}
+        {!dashboardPages.includes(location.pathname) &&
+        !tenantPages.includes(location.pathname) && <Sidemenu />}
       <Outlet />
     </div>
   )
@@ -80,6 +98,10 @@ const Router = createBrowserRouter([
         path:"tenantBoarding",
         element:<TenantBoarding/>
      },
+     {
+        path :"tenantDashboard",
+        element:<TenantDashboard/>
+     },
       {
         path: "property",
         element: <Property />,
@@ -109,11 +131,21 @@ const Router = createBrowserRouter([
         element: <Projectmanager />,
       },
       {
+<<<<<<< HEAD
         path: "payment",
         element: <Payment />,
       },
      
       
+=======
+        path: "tenanteditProfile",
+        element: <TenanteditProfile />,
+      },
+      {
+        path:"tenantOffboarding",
+        element:<TenantOffboarding/>
+     },
+>>>>>>> 9b66f2b468a396b49d78b88322204fccd66ca5c1
     ],
   },
 ]);
