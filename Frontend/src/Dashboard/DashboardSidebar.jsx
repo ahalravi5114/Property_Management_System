@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 
 const DashboardSidebar = () => {
@@ -21,7 +21,7 @@ const DashboardSidebar = () => {
           {isDropdownOpen && (
             <ul className="absolute left-0 mt-2 w-48 bg-gray-700 text-white shadow-lg rounded">
               <li className="p-2 hover:bg-gray-600">
-                <Link to="/user/teanantlist">Tenant</Link>
+                <Link to="/user/tenantAdmin">Tenant</Link>
               </li>
               <li className="p-2 hover:bg-gray-600">
                 <Link to="/user/projectmanagerlist">Project Manager</Link>

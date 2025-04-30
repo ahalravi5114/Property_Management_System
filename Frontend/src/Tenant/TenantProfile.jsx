@@ -18,8 +18,10 @@ const TenantProfile = () => {
     security_deposit: "Paid",
   };
   const [tenantProfile, setTenantProfile] = useState(defaultProfile);
+  const [lease, setLease] = useState();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const options = { year: 'numeric', month: 'long', day: 'numeric' };
 
   useEffect(() => {
     const fetchTenantProfile = async () => {
@@ -39,10 +41,8 @@ const TenantProfile = () => {
         } else {
           // Merge the fetched data with default profile
           // fetched data will override default values where they exist
-          setTenantProfile(prevProfile => ({
-            ...prevProfile,
-            ...data.data  // assuming the profile data is in data.profile
-          }));
+          setTenantProfile(prevdata=>({...prevdata,...data.data.profile}));
+          setLease(data.data.leases);
         }
       } catch (err) {
         setError('Failed to fetch profile data');
@@ -174,12 +174,12 @@ const TenantProfile = () => {
             </Typography>
             <div className="flex gap-5 justify-between">
               <Box sx={{ flex: 1 }}>
-                <img src="https://ik.imagekit.io/varsh0506/Beauroi/property_beauroi.jpg?updatedAt=17398590165630" alt="Property" className="w-full h-52 object-cover rounded-lg" />
+                <img src={lease.propertyImage} alt="Property" className="w-full h-52 object-cover rounded-lg" />
               </Box>
               <Box className="flex flex-col justify-center items-start gap-2 w-[50%]">
                 <Typography variant="body1" color="text.primary" sx={{ mb: 1 }}>
                   <House sx={{ mr: 1, color: "#1976d2" }} />
-                  <span className="font-semibold">Address:</span> {tenantProfile.address}
+                  <span className="font-semibold">Address:</span> {lease.propertyAddress}
                 </Typography>
                 <Typography variant="body1" color="text.primary" sx={{ mb: 1 }}>
                   <House sx={{ mr: 1, color: "#1976d2" }} />
@@ -191,7 +191,7 @@ const TenantProfile = () => {
                 </Typography>
                 <Typography variant="body1" color="text.primary" sx={{ mb: 1 }}>
                   <CalendarToday sx={{ mr: 1, color: "#1976d2" }} />
-                  <span className="font-semibold">Lease Duration:</span> {tenantProfile.tenant_duration}
+                  <span className="font-semibold">Lease Duration:</span> {new Date(lease.startDate).toLocaleDateString()} to {new Date(lease.endDate).toLocaleDateString()}
                 </Typography>
                 <Typography variant="body1" color="text.primary" sx={{ mb: 1 }}>
                   <CalendarToday sx={{ mr: 1, color: "#1976d2" }} />
@@ -199,7 +199,7 @@ const TenantProfile = () => {
                 </Typography>
                 <Typography variant="body1" color="text.primary" sx={{ mb: 1 }}>
                   <CalendarToday sx={{ mr: 1, color: "#1976d2" }} />
-                  <span className="font-semibold">Lease Status:</span> <span className="bg-green-600 text-white p-2 px-4 rounded-lg">{tenantProfile.lease_status}</span>
+                  <span className="font-semibold">Lease Status:</span> <span className="bg-green-600 text-white p-2 px-4 rounded-lg">{lease.status}</span>
                 </Typography>
               </Box>
             </div>

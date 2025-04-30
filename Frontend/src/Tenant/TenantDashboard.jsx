@@ -16,7 +16,7 @@ const TenantDashboard = () => {
   const quickLinks = [
     { name: 'Pay Rent', icon: <CreditCard size={20} />, path: '/tenant/payments' },
     { name: 'Maintenance', icon: <Wrench size={20} />, path: '/tenant/maintenance' },
-    { name: 'Offboarding', icon: <UserMinus size={20} />, path: '/tenant/offboarding' },
+    //{ name: 'Offboarding', icon: <UserMinus size={20} />, path: '/tenant/offboarding' },
   ];
 
   return (

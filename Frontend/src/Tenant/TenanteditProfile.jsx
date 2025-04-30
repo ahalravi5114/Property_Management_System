@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Avatar, Button } from "@mui/material";
 import { Phone, Email } from "@mui/icons-material";
-import { Link,  useNavigate} from "react-router-dom";
+import { useNavigate} from "react-router-dom";
 
 const TenanteditProfile = () => {
   const navigate = useNavigate();

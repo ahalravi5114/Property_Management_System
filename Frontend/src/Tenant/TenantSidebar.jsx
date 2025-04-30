@@ -21,11 +21,11 @@ import {
         icon: <Wrench size={20} />,
         path: '/user/maintenance',
       },
-      {
-        name: 'Offboarding',
-        icon: <UserMinus size={20} />,
-        path: '/user/tenantOffboarding',
-      },
+      // {
+      //   name: 'Offboarding',
+      //   icon: <UserMinus size={20} />,
+      //   path: '/user/tenantOffboarding',
+      // },
       {
         name: 'Notifications',
         icon: <Bell size={20} />,

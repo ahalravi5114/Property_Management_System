@@ -96,6 +96,7 @@ const Property = mongoose.model("Property", PropertySchema);
 // Lease Schema & Model
 const LeaseSchema = new mongoose.Schema(
   {
+    tenantId:{type:String,required:true},
     tenantName: { type: String, required: true },
     startDate: { type: Date, required: true },
     endDate: { type: Date, required: true },
@@ -448,29 +449,33 @@ app.get('/displayTenantProfile/:id', async (req, res) => {
   const { id } = req.params;
 
   try {
+    // Fetch tenant profile
     const profile = await Tenantprofile.findOne({ tenant_id: id });
+    //fetch tenant lease details
+    const leases = await Lease.findOne({ tenantId: id }); 
 
-    if (!profile) {
+    if (!profile && !leases) {
       return res.status(404).json({
         success: false,
-        message: "Tenant profile not found"
+        message: "No tenant profile or lease found"
       });
     }
 
     res.json({
       success: true,
-      data: profile
+      data: {
+        profile,
+        leases
+      }
     });
   } catch (error) {
-    console.error("❌ Error fetching tenant profile by tenant_id:", error);
+    console.error("❌ Error fetching tenant profile and lease:", error);
     res.status(500).json({
       success: false,
-      message: "Server error while fetching profile"
+      message: "Server error while fetching data"
     });
   }
 });
 
-// 🚀 Start Server
-app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));
 // Start Server
 app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));
