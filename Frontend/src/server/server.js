@@ -4,19 +4,29 @@ import bcrypt from "bcryptjs";
 import dotenv from "dotenv";
 import cors from "cors";
 import multer from "multer";
+import path from "path";
+import fs from "fs";
+import { fileURLToPath } from "url";
 
+// Configure environment variables
 dotenv.config();
 
+// Create Express app
 const app = express();
 const PORT = process.env.PORT || 5000;
+
+// Get directory name for ES Modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Middleware
 app.use(cors());
 app.use(express.json());
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // MongoDB Connection
 mongoose
-  .connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .connect(process.env.MONGO_URI)
   .then(() => console.log("✅ MongoDB Connected"))
   .catch((err) => console.error("❌ MongoDB Connection Error:", err));
 
@@ -68,7 +78,55 @@ const Maintenance = mongoose.model(
   )
 );
 
-// 📝 Signup Route
+// Property Schema & Model
+const PropertySchema = new mongoose.Schema(
+  {
+    name: { type: String, required: true },
+    location: { type: String, required: true },
+    type: { type: String, required: true },
+    size: { type: String, required: true },
+    amenities: { type: String, required: true },
+    price: { type: Number, required: true },
+    image: { type: String },
+  },
+  { timestamps: true }
+);
+const Property = mongoose.model("Property", PropertySchema);
+
+// Lease Schema & Model
+const LeaseSchema = new mongoose.Schema(
+  {
+    tenantName: { type: String, required: true },
+    startDate: { type: Date, required: true },
+    endDate: { type: Date, required: true },
+    propertyAddress: { type: String, required: true },
+    agreement: String,
+    propertyImage: String,
+    status: { type: String, default: "Active" },
+  },
+  { timestamps: true }
+);
+const Lease = mongoose.model("Lease", LeaseSchema);
+
+// Configure Multer for property image uploads
+const propertyStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    const uploadDir = path.join(__dirname, "uploads", "properties");
+    if (!fs.existsSync(uploadDir)) {
+      fs.mkdirSync(uploadDir, { recursive: true });
+    }
+    cb(null, uploadDir);
+  },
+  filename: (req, file, cb) => {
+    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+    const ext = path.extname(file.originalname);
+    cb(null, "property-" + uniqueSuffix + ext);
+  },
+});
+
+const propertyUpload = multer({ storage: propertyStorage });
+
+// Routes
 app.post("/signup", async (req, res) => {
   try {
     const { role, email, password } = req.body;
@@ -101,7 +159,6 @@ app.post("/signup", async (req, res) => {
   }
 });
 
-// 🔑 Signin Route
 app.post("/signin", async (req, res) => {
   try {
     const { role, email, password } = req.body;
@@ -133,7 +190,6 @@ app.post("/signin", async (req, res) => {
   }
 });
 
-// 🛠️ Maintenance Request Submission
 app.post("/submit-maintenance", async (req, res) => {
   try {
     const { name, location, problem, phone, email, requestType } = req.body;
@@ -153,31 +209,116 @@ app.post("/submit-maintenance", async (req, res) => {
 
     await newMaintenance.save();
 
-    res.status(201).json({ message: "Maintenance request submitted successfully" });
+    res
+      .status(201)
+      .json({ message: "Maintenance request submitted successfully" });
   } catch (error) {
     console.error("❌ Maintenance Error:", error);
     res.status(500).json({ error: "Maintenance submission failed" });
   }
 });
 
-const LeaseSchema = new mongoose.Schema(
-  {
-    tenantName: { type: String, required: true },
-    startDate: { type: Date, required: true },
-    endDate: { type: Date, required: true },
-    propertyAddress: { type: String, required: true },
-    agreement: String, 
-    propertyImage: String, 
-    status: { type: String, default: "Active" },
-  },
-  { timestamps: true }
-);
+// Property Routes
+app.post("/api/properties", propertyUpload.single("image"), async (req, res) => {
+  try {
+    const { name, location, type, size, amenities, price } = req.body;
 
-const Lease = mongoose.model("Lease", LeaseSchema);
+    const newProperty = new Property({
+      name,
+      location,
+      type,
+      size,
+      amenities,
+      price,
+      image: req.file ? req.file.filename : null,
+    });
 
+    await newProperty.save();
+    res
+      .status(201)
+      .json({ message: "Property added successfully", property: newProperty });
+  } catch (error) {
+    console.error("❌ Property Add Error:", error);
+    res.status(500).json({ error: "Failed to add property" });
+  }
+});
+
+app.put("/api/properties/:id", propertyUpload.single("image"), async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, location, type, size, amenities, price } = req.body;
+
+    const updateData = {
+      name,
+      location,
+      type,
+      size,
+      amenities,
+      price
+    };
+
+    // Only update image if a new one was uploaded
+    if (req.file) {
+      updateData.image = req.file.filename;
+    }
+
+    const updatedProperty = await Property.findByIdAndUpdate(id, updateData, { new: true });
+
+    if (!updatedProperty) {
+      return res.status(404).json({ error: "Property not found" });
+    }
+
+    res.json({ 
+      message: "Property updated successfully", 
+      property: {
+        ...updatedProperty._doc,
+        image: updatedProperty.image
+          ? `${req.protocol}://${req.get("host")}/uploads/properties/${updatedProperty.image}`
+          : null
+      }
+    });
+  } catch (error) {
+    console.error("❌ Property Update Error:", error);
+    res.status(500).json({ error: "Failed to update property" });
+  }
+});
+
+app.get("/api/properties", async (req, res) => {
+  try {
+    const properties = await Property.find();
+    const propertiesWithImages = properties.map((property) => ({
+      ...property._doc,
+      image: property.image
+        ? `${req.protocol}://${req.get("host")}/uploads/properties/${property.image}`
+        : null,
+    }));
+    res.json(propertiesWithImages);
+  } catch (error) {
+    console.error("❌ Property Fetch Error:", error);
+    res.status(500).json({ error: "Failed to fetch properties" });
+  }
+});
+
+app.delete("/api/properties/:id", async (req, res) => {
+  try {
+    const property = await Property.findByIdAndDelete(req.params.id);
+    if (!property) {
+      return res.status(404).json({ error: "Property not found" });
+    }
+    res.json({ message: "Property deleted successfully" });
+  } catch (error) {
+    console.error("❌ Property Delete Error:", error);
+    res.status(500).json({ error: "Failed to delete property" });
+  }
+});
+
+// Lease Routes
 app.post(
   "/leases",
-  upload.fields([{ name: "agreement" }, { name: "propertyImage" }]),
+  upload.fields([
+    { name: "agreement", maxCount: 1 },
+    { name: "propertyImage", maxCount: 1 },
+  ]),
   async (req, res) => {
     try {
       const { tenantName, startDate, endDate, propertyAddress } = req.body;
@@ -193,7 +334,14 @@ app.post(
         ? req.files["propertyImage"][0].buffer.toString("base64")
         : null;
 
-      const lease = new Lease({ tenantName, startDate, endDate, propertyAddress, agreement, propertyImage });
+      const lease = new Lease({
+        tenantName,
+        startDate,
+        endDate,
+        propertyAddress,
+        agreement,
+        propertyImage,
+      });
       await lease.save();
 
       res.status(201).json({ message: "Lease added successfully", lease });
@@ -204,7 +352,6 @@ app.post(
   }
 );
 
-// 📄 Fetch All Leases
 app.get("/getleases", async (req, res) => {
   try {
     const leases = await Lease.find();
@@ -324,4 +471,6 @@ app.get('/displayTenantProfile/:id', async (req, res) => {
 });
 
 // 🚀 Start Server
+app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));
+// Start Server
 app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));
