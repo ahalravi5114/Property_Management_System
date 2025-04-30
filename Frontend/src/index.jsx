@@ -1,4 +1,3 @@
-import React from "react";
 import ReactDOM from 'react-dom/client'
 import {createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom'
 import { useLocation } from 'react-router-dom';
@@ -20,7 +19,10 @@ import Teanantlist from './Dashboard/Teanantlist';
 import Maintainencelist from './Dashboard/Maintainencelist';
 import Projectmanager from './Dashboard/Projectmanagerlist';
 import RequestForm from "./Maintenance/RequestForm";
-
+import TenantSidebar from "./Tenant/TenantSidebar";
+import TenantDashboard from './Tenant/TenantDashboard';
+import TenanteditProfile from './Tenant/TenanteditProfile';
+import TenantOffboarding from './Tenant/TenantOffboarding';
 
 const App=()=>{
   const location = useLocation();
@@ -31,9 +33,21 @@ const App=()=>{
     "/user/maintainencelist",
     "/user/projectmanagerlist",
   ];
+
+  const tenantPages = [
+    "/user/tenantProfile",
+    "/user/tenantDashboard",
+    "/user/tenantBoarding",
+    "/user/tenanteditProfile",
+    "/user/tenantOffboarding",
+  ];
+
   return(
     <div className='flex'>
-        {dashboardPages.includes(location.pathname) ? <DashboardSidebar /> : <Sidemenu />}
+        {dashboardPages.includes(location.pathname) && <DashboardSidebar />}
+        {tenantPages.includes(location.pathname) && <TenantSidebar />}
+        {!dashboardPages.includes(location.pathname) &&
+        !tenantPages.includes(location.pathname) && <Sidemenu />}
       <Outlet />
     </div>
   )
@@ -79,6 +93,10 @@ const Router = createBrowserRouter([
         path:"tenantBoarding",
         element:<TenantBoarding/>
      },
+     {
+        path :"tenantDashboard",
+        element:<TenantDashboard/>
+     },
       {
         path: "property",
         element: <Property />,
@@ -107,8 +125,14 @@ const Router = createBrowserRouter([
         path: "projectmanagerlist",
         element: <Projectmanager />,
       },
-     
-      
+      {
+        path: "tenanteditProfile",
+        element: <TenanteditProfile />,
+      },
+      {
+        path:"tenantOffboarding",
+        element:<TenantOffboarding/>
+     },
     ],
   },
 ]);

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { FaSearch, FaUser, FaEnvelope, FaPhone, FaHome, FaEdit, FaTrash, FaPlus } from 'react-icons/fa';
+import { FaSearch, FaUser,FaEdit, FaTrash} from 'react-icons/fa';
 
 const initialTenants = [
   { id: 1, name: "Alice Howard", email: "howard@mail.com", contact: "7775552214", image: "https://ik.imagekit.io/varsh0506/Beauroi/profile_female.jfif?updatedAt=1742465364791", property: "Apartment 101", rentPaid: true },
