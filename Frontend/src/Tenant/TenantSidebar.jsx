@@ -15,7 +15,7 @@ import {
     const menuItems = [
       { name: 'Dashboard', icon: <Home size={20} />, path: '/user/tenantDashboard' },
       { name: 'Profile', icon: <User size={20} />, path: '/user/tenantProfile' },
-      { name: 'Payments', icon: <CreditCard size={20} />, path: '/tenant/payments' },
+      { name: 'Payments', icon: <CreditCard size={20} />, path: '/user/payment' },
       {
         name: 'Maintenance',
         icon: <Wrench size={20} />,
@@ -31,7 +31,7 @@ import {
         icon: <Bell size={20} />,
         path: '/tenant/notifications',
       },
-      { name: 'Logout', icon: <LogOut size={20} />, path: '/logout' },
+      { name: 'Logout', icon: <LogOut size={20} />, path: '/signin' },
     ];
   
     return (

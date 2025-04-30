@@ -117,11 +117,13 @@ export default function AuthPage() {
 import { useState } from "react";
 import { motion } from "framer-motion";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function AuthPage() {
+  const navigate = useNavigate();
   const [isSignUp, setIsSignUp] = useState(false);
   const [formData, setFormData] = useState({
-    role: "",
+    role: "admin",
     email: "",
     password: "",
     confirmPassword: "",
@@ -135,7 +137,11 @@ export default function AuthPage() {
   // Handle Form Submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+     // Add role validation for signup
+  if (isSignUp && !formData.role) {
+    alert("Please select a role!");
+    return;
+  }
     if (isSignUp && formData.password !== formData.confirmPassword) {
       alert("Passwords do not match!");
       return;
@@ -146,31 +152,34 @@ export default function AuthPage() {
       : "http://localhost:5000/signin";
 
     try {
+      console.log('FormData being sent:', formData);
       const { data } = await axios.post(endpoint, formData);
       console.log(data);
+      console.log("Complete response:", data);
       alert(data.message);
-      
-
-      if (!isSignUp) {
+            if (!isSignUp) {
         localStorage.setItem("token", data.token);
-        // Redirect Based on User Role
-        switch (data.role) {
-          case "admin":
-            window.location.href = "/user/dashboard";
-            break;
-          case "propertyManager":
-            window.location.href = "/dashboard";
-            break;
-          case "tenant":
-            window.location.href = "/user/tenantDashboard";
-            break;
-          case "accountant":
-            window.location.href = "/dashboard";
-            break;
-          default:
-            window.location.href = "/user/dashboard";
-        }
-      } else {
+        const role = data.data.role?.toLowerCase();
+      console.log("User role:", role);
+
+      // Redirect based on role
+      switch (role) {
+        case "admin":
+          navigate("/admin/dashboard");
+          break;
+        case "propertymanager":
+          navigate("/dashboard");
+          break;
+        case "tenant":
+          navigate("/user/tenantDashboard");
+          break;
+        case "accountant":
+          navigate("/dashboard");
+          break;
+        default:
+          navigate("/user/dashboard");
+      }
+    } else {
         setIsSignUp(false); // Switch to Sign In page after Sign Up
       }
     } catch (error) {
@@ -198,16 +207,18 @@ export default function AuthPage() {
             <div>
               <label className="block text-sm font-medium text-white">Select Role</label>
               <select
-                name="role"
-                value={formData.role}
-                onChange={handleChange}
-                className="w-full p-2 rounded-lg bg-white/20 text-black border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400"
-              >
-                <option value="admin">Admin</option>
-                <option value="propertyManager">Property Manager</option>
-                <option value="tenant">Tenant</option>
-                <option value="accountant">Accountant</option>
-              </select>
+  name="role"
+  value={formData.role}
+  onChange={handleChange}
+  required
+  className="w-full p-2 rounded-lg bg-white/20 text-black border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400"
+>
+  <option value="">Select a role</option>
+  <option value="admin">Admin</option>
+  <option value="propertyManager">Property Manager</option>
+  <option value="tenant">Tenant</option>
+  <option value="accountant">Accountant</option>
+</select>
             </div>
           )}
 

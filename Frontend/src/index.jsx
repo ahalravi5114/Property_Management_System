@@ -40,9 +40,11 @@ const App=()=>{
 
   const tenantPages = [
     "/user/tenantProfile",
+    "/user/tenantDashboard",
     "/user/tenantdashboard",
     "/user/tenanteditProfile",
     "/user/tenantOffboarding",
+    "/user/payment"
   ];
 
   return(

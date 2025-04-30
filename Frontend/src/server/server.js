@@ -96,7 +96,7 @@ const Property = mongoose.model("Property", PropertySchema);
 // Lease Schema & Model
 const LeaseSchema = new mongoose.Schema(
   {
-    tenantId: { type: Number, required: true, unique: true }, // Auto-incremented tenantId
+    tenantId: { type: String, required: true, unique: true }, // Auto-incremented tenantId
     tenantName: { type: String, required: true },
     startDate: { type: Date, required: true },
     endDate: { type: Date, required: true },
@@ -185,7 +185,7 @@ app.post("/signin", async (req, res) => {
       return res.status(401).json({ error: "Invalid credentials" });
     }
 
-    res.json({ message: "Login successful", user });
+    res.json({ message: "Login successful", data: user });
   } catch (error) {
     console.error("❌ Signin Error:", error);
     res.status(500).json({ error: "Signin failed" });
