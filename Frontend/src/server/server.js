@@ -96,17 +96,18 @@ const Property = mongoose.model("Property", PropertySchema);
 // Lease Schema & Model
 const LeaseSchema = new mongoose.Schema(
   {
-    tenantId:{type:String,required:true},
+    tenantId: { type: Number, required: true, unique: true }, // Auto-incremented tenantId
     tenantName: { type: String, required: true },
     startDate: { type: Date, required: true },
     endDate: { type: Date, required: true },
     propertyAddress: { type: String, required: true },
-    agreement: String,
-    propertyImage: String,
+    agreement: { type: String }, // Base64 encoded string
+    propertyImage: { type: String }, // Base64 encoded string
     status: { type: String, default: "Active" },
   },
   { timestamps: true }
 );
+
 const Lease = mongoose.model("Lease", LeaseSchema);
 
 // Configure Multer for property image uploads
@@ -313,20 +314,27 @@ app.delete("/api/properties/:id", async (req, res) => {
   }
 });
 
-// Lease Routes
+const counterSchema = new mongoose.Schema({
+  name: { type: String, required: true, unique: true },
+  value: { type: Number, default: 0 },
+});
+
 app.post(
   "/leases",
   upload.fields([
-    { name: "agreement", maxCount: 1 },
+    { name: "agreement",     maxCount: 1 },
     { name: "propertyImage", maxCount: 1 },
   ]),
   async (req, res) => {
     try {
       const { tenantName, startDate, endDate, propertyAddress } = req.body;
-
       if (!tenantName || !startDate || !endDate || !propertyAddress) {
         return res.status(400).json({ error: "All fields are required" });
       }
+
+      // 🔍 Find the lease with the highest tenantId so far
+      const last = await Lease.findOne().sort({ tenantId: -1 }).lean();
+      const nextTenantId = last ? last.tenantId + 1 : 1;
 
       const agreement = req.files["agreement"]
         ? req.files["agreement"][0].buffer.toString("base64")
@@ -336,6 +344,7 @@ app.post(
         : null;
 
       const lease = new Lease({
+        tenantId:      nextTenantId,   // ← auto-assigned here
         tenantName,
         startDate,
         endDate,
@@ -343,8 +352,8 @@ app.post(
         agreement,
         propertyImage,
       });
-      await lease.save();
 
+      await lease.save();
       res.status(201).json({ message: "Lease added successfully", lease });
     } catch (error) {
       console.error("❌ Lease Addition Error:", error);
@@ -477,5 +486,5 @@ app.get('/displayTenantProfile/:id', async (req, res) => {
   }
 });
 
-// Start Server
+// 🚀 Start Server
 app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));

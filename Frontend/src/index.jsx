@@ -19,6 +19,7 @@ import Teanantlist from './Dashboard/Teanantlist';
 import Maintainencelist from './Dashboard/Maintainencelist';
 import Projectmanager from './Dashboard/Projectmanagerlist';
 import RequestForm from "./Maintenance/RequestForm";
+import Payment from "./Payment/Payment";
 import TenantSidebar from "./Tenant/TenantSidebar";
 import TenantDashboard from './Tenant/TenantDashboard';
 import TenanteditProfile from './Tenant/TenanteditProfile';
@@ -127,7 +128,10 @@ const Router = createBrowserRouter([
         element: <Projectmanager />,
       },
       {
-        path: "tenanteditProfile",
+        path: "payment",
+        element: <Payment />,
+      },
+      {  path: "tenanteditProfile",
         element: <TenanteditProfile />,
       },
       {

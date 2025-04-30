@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import { Link } from "react-router-dom";
 import { FaBars, FaTimes, FaHome, FaBell, FaUsers, FaFileContract, FaWrench, FaSignOutAlt, FaInfoCircle, FaEnvelope  } from "react-icons/fa";
 
@@ -9,7 +9,7 @@ const Sidemenu = () => {
   return (
     <>
       <div className="fixed top-4 left-4 z-30 text-white md:hidden" onClick={() => setMenuOpen(!menuOpen)}>
-        {menuOpen ? <FaTimes size={30} className="text-[#008080]" /> : <FaBars size={30} className="text-[#008080]" />}
+        {menuOpen ? <FaTimes size={30} className="text-[#FFD700]" /> : <FaBars size={30} className="text-[#FFD700]" />}
       </div>
       
       <div className={`bg-[#003366] w-[260px] h-screen p-6 fixed z-20 transition-transform ${menuOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0 md:flex flex-col space-y-7 pt-10 shadow-2xl border-r-4 border-[#D4AF37]`}>
