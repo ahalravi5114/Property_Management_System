@@ -165,7 +165,7 @@ export default function AuthPage() {
       // Redirect based on role
       switch (role) {
         case "admin":
-          navigate("/admin/dashboard");
+          navigate("/user/dashboard");
           break;
         case "propertymanager":
           navigate("/dashboard");
