@@ -158,7 +158,7 @@ const PropertyManager = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gray-100 p-10 w-full ml-[250px] flex flex-col items-center justify-center">
+    <div className="min-h-screen bg-gray-100 p-10 w-full flex flex-col items-center justify-center">
       <h1 className="text-4xl font-bold text-blue-900 mb-10 transform hover:scale-105 transition duration-300">
         Property Management
       </h1>

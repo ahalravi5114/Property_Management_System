@@ -24,7 +24,7 @@ const DashboardSidebar = () => {
                 <Link to="/user/tenantAdmin">Tenant</Link>
               </li>
               <li className="p-2 hover:bg-gray-600">
-                <Link to="/user/projectmanagerlist">Project Manager</Link>
+                <Link to="/user/propertymanager">Property Manager</Link>
               </li>
               <li className="p-2 hover:bg-gray-600">
                 <Link to="/user/accountantlist">Accountant</Link>

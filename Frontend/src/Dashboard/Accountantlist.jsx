@@ -25,7 +25,7 @@ const AccountantList = () => {
   };
 
   return (
-    <div className="bg-white shadow-lg rounded-3xl ml-64 p-8 w-full transition-all transform hover:scale-105">
+    <div className="bg-white shadow-lg rounded-3xl p-8 w-full transition-all">
 
       <div className="bg-white shadow-lg rounded-3xl p-8 w-full max-w-8xl">
         <h2 className="text-3xl font-semibold text-gray-900 mb-8 flex items-center gap-3">

@@ -19,7 +19,7 @@ import {
       {
         name: 'Maintenance',
         icon: <Wrench size={20} />,
-        path: '/user/maintenance',
+        path: '/requestform',
       },
       // {
       //   name: 'Offboarding',

@@ -25,6 +25,8 @@ import TenantDashboard from './Tenant/TenantDashboard';
 import TenanteditProfile from './Tenant/TenanteditProfile';
 import TenantOffboarding from './Tenant/TenantOffboarding';
 import TenantAdmin from './Tenant/TenantAdmin';
+import PropertyManager from './Property/Propertymanager';
+import PropertyUser from './Property/propertyuser';
 
 const App=()=>{
   const location = useLocation();
@@ -36,6 +38,8 @@ const App=()=>{
     "/user/projectmanagerlist",
     "/user/tenantAdmin",
     "/user/tenantBoarding",
+    "/user/propertymanager",
+    "/user/accountantlist",
   ];
 
   const tenantPages = [
@@ -44,7 +48,8 @@ const App=()=>{
     "/user/tenantdashboard",
     "/user/tenanteditProfile",
     "/user/tenantOffboarding",
-    "/user/payment"
+    "/user/payment",
+    "/requestform"
   ];
 
   return(
@@ -68,14 +73,13 @@ const Router = createBrowserRouter([
     path: "/signin",
     element: <Signin />, 
   },
-  { path: "requestform", 
-    element: <RequestForm /> 
-  },
   {
     path: "/user",
     element: <App />,
     children: [
-      
+      { path: "requestform", 
+        element: <RequestForm /> 
+      },
       {
         path: "lease",
         element: <Lease />,
@@ -104,6 +108,14 @@ const Router = createBrowserRouter([
       {
         path: "property",
         element: <Property />,
+      },
+      {
+        path: "propertymanager",
+        element: <PropertyManager />,
+      },
+      {
+        path: "propertyuser",
+        element: <PropertyUser />,
       },
       {
         path: "maintenance",
