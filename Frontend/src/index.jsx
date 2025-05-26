@@ -49,7 +49,7 @@ const App=()=>{
     "/user/tenanteditProfile",
     "/user/tenantOffboarding",
     "/user/payment",
-    "/requestform"
+    "/user/requestform"
   ];
 
   return(

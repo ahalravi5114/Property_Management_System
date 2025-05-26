@@ -5,7 +5,6 @@ import {
     Wrench,
     LogOut,
     Bell,
-    UserMinus,
   } from 'lucide-react';
   
   const TenantSidebar = () => {
@@ -19,7 +18,7 @@ import {
       {
         name: 'Maintenance',
         icon: <Wrench size={20} />,
-        path: '/requestform',
+        path: '/user/requestform',
       },
       // {
       //   name: 'Offboarding',

@@ -1,131 +1,118 @@
-import { useState } from 'react';
+import { useForm } from "react-hook-form";
 
 const RequestForm = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    location: '',
-    problem: '',
-    phone: '',
-    email: '',
-    requestType: 'Property',
-  });
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    try {
-      const response = await fetch('http://localhost:5000/submit-maintenance', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to submit maintenance request');
-      }
-
-      alert('Maintenance request submitted successfully');
-
-      setFormData({
-        name: '',
-        location: '',
-        problem: '',
-        phone: '',
-        email: '',
-        requestType: 'Property',
-      });
-    } catch (error) {
-      console.error('Error:', error);
-      alert('Error submitting maintenance request');
-    }
+  const onSubmit = (data) => {
+    console.log("Maintenance Request Submitted:", data);
+    alert("Maintenance Request Submitted Successfully!");
   };
 
   return (
-    <div className="min-h-screen p-8 bg-gradient-to-b from-blue-900 to-orange-300 text-white shadow-lg flex justify-center items-center">
-      <div className="max-w-lg w-full">
-        <h2 className="text-4xl font-bold mb-8 text-center">Maintenance Request Form</h2>
-        <form onSubmit={handleSubmit} className="space-y-6">
+    <div className="flex justify-center items-center min-h-screen bg-gray-100 p-100 pt-10 w-full ml-[80px]">
+      <div className="bg-white shadow-lg rounded-lg p-6 w-[500px]">
+        <h2 className="text-2xl font-bold text-center mb-6 text-[#003366]">Maintenance Request Form</h2>
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium">Name</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Unit Number</label>
             <input
               type="text"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              required
-              className="w-full p-3 mt-1 border rounded-lg text-black"
+              {...register("unitNumber", { required: "Unit number is required" })}
+              className="w-full p-2 border rounded focus:ring-2 focus:ring-[#008080] focus:border-transparent"
+              placeholder="Enter your unit number"
             />
+            {errors.unitNumber && <p className="text-red-500 text-sm mt-1">{errors.unitNumber.message}</p>}
           </div>
 
           <div>
-            <label className="block text-sm font-medium">Location</label>
-            <input
-              type="text"
-              name="location"
-              value={formData.location}
-              onChange={handleChange}
-              required
-              className="w-full p-3 mt-1 border rounded-lg text-black"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium">Problem</label>
-            <textarea
-              name="problem"
-              value={formData.problem}
-              onChange={handleChange}
-              required
-              className="w-full p-3 mt-1 border rounded-lg text-black"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium">Phone</label>
-            <input
-              type="text"
-              name="phone"
-              value={formData.phone}
-              onChange={handleChange}
-              required
-              className="w-full p-3 mt-1 border rounded-lg text-black"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium">Email</label>
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              required
-              className="w-full p-3 mt-1 border rounded-lg text-black"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium">Request Type</label>
-            <select
-              name="requestType"
-              value={formData.requestType}
-              onChange={handleChange}
-              required
-              className="w-full p-3 mt-1 border rounded-lg text-black"
+            <label className="block text-sm font-medium text-gray-700 mb-1">Issue Type</label>
+            <select 
+              {...register("issueType", { required: "Please select an issue type" })}
+              className="w-full p-2 border rounded focus:ring-2 focus:ring-[#008080] focus:border-transparent"
             >
-              <option value="Property">Property</option>
-              <option value="Lease">Lease</option>
-              <option value="Staff">Staff</option>
+              <option value="">Select issue type...</option>
+              <option value="plumbing">Plumbing</option>
+              <option value="electrical">Electrical</option>
+              <option value="hvac">HVAC</option>
+              <option value="structural">Structural</option>
+              <option value="appliance">Appliance</option>
+              <option value="other">Other</option>
             </select>
+            {errors.issueType && <p className="text-red-500 text-sm mt-1">{errors.issueType.message}</p>}
           </div>
 
-          <button type="submit" className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-            Submit
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Priority Level</label>
+            <select 
+              {...register("priority", { required: "Please select a priority level" })}
+              className="w-full p-2 border rounded focus:ring-2 focus:ring-[#008080] focus:border-transparent"
+            >
+              <option value="">Select priority...</option>
+              <option value="low">Low - Not Urgent</option>
+              <option value="medium">Medium - Needs Attention</option>
+              <option value="high">High - Urgent</option>
+              <option value="emergency">Emergency - Immediate Action Required</option>
+            </select>
+            {errors.priority && <p className="text-red-500 text-sm mt-1">{errors.priority.message}</p>}
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+            <textarea
+              {...register("description", { 
+                required: "Description is required",
+                minLength: {
+                  value: 10,
+                  message: "Description must be at least 10 characters"
+                }
+              })}
+              className="w-full p-2 border rounded focus:ring-2 focus:ring-[#008080] focus:border-transparent"
+              rows="4"
+              placeholder="Please describe the issue in detail..."
+            />
+            {errors.description && <p className="text-red-500 text-sm mt-1">{errors.description.message}</p>}
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Preferred Contact Time</label>
+            <select 
+              {...register("contactTime", { required: "Please select a preferred contact time" })}
+              className="w-full p-2 border rounded focus:ring-2 focus:ring-[#008080] focus:border-transparent"
+            >
+              <option value="">Select preferred time...</option>
+              <option value="morning">Morning (8AM - 12PM)</option>
+              <option value="afternoon">Afternoon (12PM - 4PM)</option>
+              <option value="evening">Evening (4PM - 8PM)</option>
+            </select>
+            {errors.contactTime && <p className="text-red-500 text-sm mt-1">{errors.contactTime.message}</p>}
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Contact Number</label>
+            <input
+              type="tel"
+              {...register("contactNumber", { 
+                required: "Contact number is required",
+                pattern: {
+                  value: /^[0-9]{10}$/,
+                  message: "Please enter a valid 10-digit phone number"
+                }
+              })}
+              className="w-full p-2 border rounded focus:ring-2 focus:ring-[#008080] focus:border-transparent"
+              placeholder="Enter your contact number"
+            />
+            {errors.contactNumber && <p className="text-red-500 text-sm mt-1">{errors.contactNumber.message}</p>}
+          </div>
+
+          <button 
+            type="submit" 
+            className="w-full bg-[#003366] text-white p-3 rounded-md hover:bg-[#008080] transition-colors duration-300 font-medium"
+          >
+            Submit Maintenance Request
           </button>
         </form>
       </div>
