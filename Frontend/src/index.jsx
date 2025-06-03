@@ -52,6 +52,10 @@ const Router = createBrowserRouter([
   { path: "requestform", 
     element: <RequestForm /> 
   },
+  {
+    path: "maintenance",
+    element: <Maintenance />,
+  },
   
   {
     path: "/user",
@@ -83,10 +87,7 @@ const Router = createBrowserRouter([
         path: "property",
         element: <Property />,
       },
-      {
-        path: "maintenance",
-        element: <Maintenance />,
-      },
+      
       {
         path: "dashboard",
         element: <Dashboard />,
