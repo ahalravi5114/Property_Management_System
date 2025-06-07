@@ -74,6 +74,17 @@ const Router = createBrowserRouter([
     path: "/signin",
     element: <Signin />, 
   },
+<<<<<<< HEAD
+=======
+  { path: "requestform", 
+    element: <RequestForm /> 
+  },
+  {
+    path: "maintenance",
+    element: <Maintenance />,
+  },
+  
+>>>>>>> 78f59ccd9b91a81774643a0e3623857dc0c81cbc
   {
     path: "/user",
     element: <App />,
@@ -109,6 +120,7 @@ const Router = createBrowserRouter([
         path: "property",
         element: <Property />,
       },
+<<<<<<< HEAD
       {
         path: "propertymanager",
         element: <PropertyManager />,
@@ -121,6 +133,9 @@ const Router = createBrowserRouter([
         path: "maintenance",
         element: <Maintenance />,
       },
+=======
+      
+>>>>>>> 78f59ccd9b91a81774643a0e3623857dc0c81cbc
       {
         path: "dashboard",
         element: <Dashboard />,
